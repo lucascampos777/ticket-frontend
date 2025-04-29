@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:5000';
+const API_URL = 'http://localhost:5000/ticket';
 
 // Create a ticket
 const createTicket = async (ticketData) => {

@@ -1,44 +1,20 @@
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import TicketForm from './components/TicketForm';
-import { useEffect, useState } from 'react';
-import api from './api/ticketApi';
-import TicketList from './components/TicketList';
+import TicketPage from './pages/TicketPage';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import DesignPage from './pages/DesignPage';
+import Navbar from './components/Navbar';
 
 function App() {
-
-  const [members, setMembers] = useState([]);
-  const [tickets, setTickets] = useState([]);
-
-  const getMembers = () => {
-    api.getMembers().then(data => {
-      setMembers(data)
-    })
-  }
-  const getTickets = () => {
-    api.getTickets().then(data => {
-      setTickets(data)
-    })
-  }
-  const addTicket = async (data) => {
-    try {
-      await api.createTicket(data);
-      getTickets();
-    } catch(e) {
-      console.error(e)
-    }
-  }
-
-  useEffect(() => {
-    getMembers();
-    getTickets();
-  }, [])
-
   return (
-    <div className="container mt-5">
-      <TicketForm members={members} onSubmit={addTicket}/>
-      <TicketList tickets={tickets} />
-    </div>
+    <BrowserRouter>
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<Navigate to="/ticket" />} />
+        <Route path="/ticket" element={<TicketPage />} />
+        <Route path="/design" element={<DesignPage />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
