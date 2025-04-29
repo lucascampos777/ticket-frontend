@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:5000/ticket';
+const API_URL = process.env.REACT_APP_API_URL+'/api/ticket';
 
 // Create a ticket
 const createTicket = async (ticketData) => {

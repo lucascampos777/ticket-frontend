@@ -5,15 +5,20 @@ export default function TicketForm({ members, onSubmit }) {
   const [description, setDescription] = useState("");
   const [deadline, setDeadline] = useState("");
   const [assignedTo, setAssignedTo] = useState("");
+  const [pending, setPending] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if(title === '' || description === '' || deadline === '' || assignedTo === '') {
-        alert("Please input all values.")
-        return;
+    if (title === '' || description === '' || deadline === '' || assignedTo === '') {
+      alert("Please input all values.")
+      return;
     }
+    setPending(true)
     const newTicket = { title, description, deadline, assignedTo };
-    if (onSubmit) onSubmit(newTicket);
+    if (onSubmit) 
+      await onSubmit(newTicket);
+
+    setPending(false)
 
     // Reset form
     setTitle("");
@@ -25,7 +30,7 @@ export default function TicketForm({ members, onSubmit }) {
   return (
     <form onSubmit={handleSubmit} className="p-3 border rounded">
       <h2 className="h5 mb-3">Create Ticket</h2>
-      
+
       <div className="mb-3">
         <input
           type="text"
@@ -67,13 +72,13 @@ export default function TicketForm({ members, onSubmit }) {
           <option value="">Select Team Member</option>
           {members.map((member) => (
             <option key={member.id} value={member.name}>
-              {member.name + " (" + (member.skills.join(', '))+")"}
+              {member.name + " (" + (member.skills.join(', ')) + ")"}
             </option>
           ))}
         </select>
       </div>
 
-      <button type="submit" className="btn btn-primary">
+      <button type="submit" className="btn btn-primary" disabled={pending}>
         Submit
       </button>
     </form>

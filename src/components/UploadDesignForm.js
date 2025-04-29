@@ -4,6 +4,7 @@ import api from "../api/designApi";
 export default function UploadDesignForm({ onUploadSuccess }) {
   const [title, setTitle] = useState("");
   const [file, setFile] = useState(null);
+    const [pending, setPending] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -11,6 +12,8 @@ export default function UploadDesignForm({ onUploadSuccess }) {
       alert("Please provide a title and select a file.");
       return;
     }
+
+    setPending(true)
 
     try {
       await api.uploadDesign(title, file);
@@ -23,6 +26,8 @@ export default function UploadDesignForm({ onUploadSuccess }) {
     } catch (error) {
       console.error("Upload failed:", error);
       alert("Upload failed.");
+    } finally {
+      setPending(false)
     }
   };
 
@@ -50,7 +55,7 @@ export default function UploadDesignForm({ onUploadSuccess }) {
         />
       </div>
 
-      <button type="submit" className="btn btn-primary">
+      <button type="submit" className="btn btn-primary" disabled={pending}>
         Upload
       </button>
     </form>
